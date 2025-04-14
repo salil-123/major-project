@@ -1,0 +1,467 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}DeepFake Detection{% endblock %}
+
+{% block header %}
+<!-- Header -->
+<header class="position-relative d-flex align-items-center justify-content-center">
+    <div class="overlay"></div>
+    <div class="bg-video">
+        <video class="bg-video-content" autoplay muted loop>
+            <source src="{% static 'videos/header-background.mp4' %}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    <div class="container d-flex h-100 align-items-center justify-content-center text-center">
+        <div class="content animated">
+            <h1 class="text-uppercase fw-bold text-light mb-4">Detect Deepfakes with AI</h1>
+            <p class="lead text-white-50 mt-3 mb-5">
+                Our platform uses state-of-the-art technology from the FaceForensics++ dataset to identify manipulated videos with high accuracy
+            </p>
+            <div class="btn-group">
+                {% if user.is_authenticated %}
+                    {% if user.is_superuser %}
+                        <a href="{% url 'admin_videoshow' adminname=user.username %}" class="btn btn-primary btn-lg shadow-sm">
+                            <i class="fas fa-play-circle mr-2"></i> Get Started
+                        </a>
+                    {% else %}
+                        <a href="{% url 'user_videoshow' username=user.username %}" class="btn btn-primary btn-lg shadow-sm">
+                            <i class="fas fa-play-circle mr-2"></i> Get Started
+                        </a>
+                    {% endif %}
+                {% else %}
+                    <a href="{% url 'login' %}" class="btn btn-outline-light btn-lg shadow-sm mr-3" style="background-color: black;">
+                        <i class="fas fa-sign-in-alt mr-2"></i> Login
+                    </a>
+                    <a href="{% url 'signup' %}" class="btn btn-primary btn-lg shadow-sm">
+                        <i class="fas fa-user-plus mr-2"></i> Sign Up
+                    </a>
+                {% endif %}
+            </div>
+            <div class="scroll-down mt-5">
+                <a class="js-scroll-trigger" href="#about">
+                    <i class="fas fa-angle-down animated bounce"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- ABOUT SECTION -->
+<section id="about" class="py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 order-lg-2">
+                <div class="p-5">
+                    <!-- Replaced with SVG illustration -->
+                    <div class="deepfake-illustration rounded shadow-lg p-4 bg-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" class="img-fluid">
+                            <rect width="800" height="500" fill="#f8f9fa" rx="15" ry="15"/>
+                            <circle cx="400" cy="180" r="100" fill="#e9ecef"/>
+                            <circle cx="400" cy="180" r="90" fill="#dee2e6"/>
+                            <circle cx="400" cy="320" r="100" fill="#e9ecef"/>
+                            <circle cx="400" cy="320" r="90" fill="#dee2e6"/>
+                            <path d="M300 180 L500 180" stroke="#6c757d" stroke-width="4" stroke-dasharray="10,10"/>
+                            <path d="M300 320 L500 320" stroke="#6c757d" stroke-width="4" stroke-dasharray="10,10"/>
+                            <path d="M400 50 L400 450" stroke="#6c757d" stroke-width="4" stroke-dasharray="10,10"/>
+                            <circle cx="350" cy="160" r="10" fill="#495057"/>
+                            <circle cx="450" cy="160" r="10" fill="#495057"/>
+                            <path d="M330 210 Q400 250 470 210" stroke="#495057" stroke-width="4" fill="none"/>
+                            <circle cx="350" cy="300" r="10" fill="#495057"/>
+                            <circle cx="450" cy="300" r="10" fill="#495057"/>
+                            <path d="M330 350 Q400 390 470 350" stroke="#495057" stroke-width="4" fill="none"/>
+                            <text x="150" y="180" font-family="Arial" font-size="24" fill="#212529">Original</text>
+                            <text x="150" y="320" font-family="Arial" font-size="24" fill="#212529">Deepfake</text>
+                            <path d="M270 70 L180 150" stroke="#dc3545" stroke-width="4" fill="none" stroke-linecap="round"/>
+                            <circle cx="270" cy="70" r="20" fill="#dc3545" fill-opacity="0.3"/>
+                            <circle cx="180" cy="150" r="20" fill="#dc3545" fill-opacity="0.3"/>
+                            <text x="550" y="180" font-family="Arial" font-size="20" fill="#28a745">✓ Natural</text>
+                            <text x="550" y="320" font-family="Arial" font-size="20" fill="#dc3545">✗ Synthetic</text>
+                            <rect x="550" y="200" width="150" height="10" fill="#28a745" rx="5" ry="5"/>
+                            <rect x="550" y="340" width="90" height="10" fill="#dc3545" rx="5" ry="5"/>
+                            <rect x="640" y="340" width="60" height="10" fill="#e9ecef" rx="5" ry="5"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 order-lg-1">
+                <div class="p-5">
+                    <h2 class="display-4">What are Deepfakes?</h2>
+                    <p class="lead">Deepfakes are synthetic media where a person's likeness is replaced with someone else's using artificial intelligence. This technology can be misused to create convincing but fake videos.</p>
+                    <p>Our platform uses advanced neural networks trained on the FaceForensics++ dataset to detect manipulated facial content with high accuracy.</p>
+                    <a href="#features" class="btn btn-outline-primary mt-3 js-scroll-trigger">Learn More</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FEATURES SECTION -->
+<section id="features" class="py-5 bg-light">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="display-4">Our Features</h2>
+                <p class="lead">Powerful tools to detect manipulated media</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 mb-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-5">
+                        <div class="feature-icon mb-4">
+                            <i class="fas fa-video fa-3x text-primary"></i>
+                        </div>
+                        <h3 class="h4 card-title">Video Analysis</h3>
+                        <p class="card-text">Upload any video and our AI will analyze facial movements, lighting, and inconsistencies to detect manipulation.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-5">
+                        <div class="feature-icon mb-4">
+                            <i class="fas fa-brain fa-3x text-primary"></i>
+                        </div>
+                        <h3 class="h4 card-title">Advanced AI</h3>
+                        <p class="card-text">Our models are trained on the comprehensive FaceForensics++ dataset for state-of-the-art detection accuracy.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-5">
+                        <div class="feature-icon mb-4">
+                            <i class="fas fa-chart-line fa-3x text-primary"></i>
+                        </div>
+                        <h3 class="h4 card-title">Detailed Reports</h3>
+                        <p class="card-text">Receive comprehensive analysis with confidence scores and visual indicators of manipulated regions.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CAROUSEL SECTION -->
+<section class="carousel-section py-5">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="display-4 text-white">How It Works</h2>
+                <p class="lead text-white-50">Our detection process in action</p>
+            </div>
+        </div>
+        <div id="carouselExample" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+                <li data-target="#carouselExample" data-slide-to="0" class="active"></li>
+                <li data-target="#carouselExample" data-slide-to="1"></li>
+                <li data-target="#carouselExample" data-slide-to="2"></li>
+            </ol>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card mb-4">
+                                <!-- Replaced with icon-based illustration -->
+                                <div class="card-img-top d-flex align-items-center justify-content-center bg-light">
+                                    <div class="text-center p-5">
+                                        <i class="fas fa-cloud-upload-alt fa-5x text-primary mb-3"></i>
+                                        <h5>Upload Media</h5>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">1. Upload Your Video</h5>
+                                    <p class="card-text">Simply upload any suspicious video to our platform for analysis.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card mb-4">
+                                <!-- Replaced with icon-based illustration -->
+                                <div class="card-img-top d-flex align-items-center justify-content-center bg-light">
+                                    <div class="text-center p-5">
+                                        <i class="fas fa-cogs fa-5x text-primary mb-3"></i>
+                                        <h5>Processing</h5>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">2. AI Processing</h5>
+                                    <p class="card-text">Our advanced neural networks analyze the video frame by frame.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card mb-4">
+                                <!-- Replaced with icon-based illustration -->
+                                <div class="card-img-top d-flex align-items-center justify-content-center bg-light">
+                                    <div class="text-center p-5">
+                                        <i class="fas fa-search-plus fa-5x text-primary mb-3"></i>
+                                        <h5>Deep Analysis</h5>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">3. Detailed Analysis</h5>
+                                    <p class="card-text">We detect inconsistencies in facial expressions, blinking, and other telltale signs.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card mb-4">
+                                <!-- Replaced with icon-based illustration -->
+                                <div class="card-img-top d-flex align-items-center justify-content-center bg-light">
+                                    <div class="text-center p-5">
+                                        <i class="fas fa-file-alt fa-5x text-primary mb-3"></i>
+                                        <h5>Results Report</h5>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">4. Results</h5>
+                                    <p class="card-text">Receive a comprehensive report with detection confidence score.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="row justify-content-center">
+                        <div class="col-md-6">
+                            <div class="card mb-4">
+                                <!-- Replaced with icon-based illustration -->
+                                <div class="card-img-top d-flex align-items-center justify-content-center bg-light">
+                                    <div class="text-center p-5">
+                                        <i class="fas fa-certificate fa-5x text-primary mb-3"></i>
+                                        <h5>Verification</h5>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">5. Verification Certificate</h5>
+                                    <p class="card-text">Get a verification certificate for authentic videos to share with others.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a class="carousel-control-prev" href="#carouselExample" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExample" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action Section -->
+<section class="cta-section text-center py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="mb-4">Ready to detect deepfakes?</h2>
+                {% if user.is_authenticated %}
+                    {% if user.is_superuser %}
+                        <a href="{% url 'admin_videoshow' adminname=user.username %}" class="btn btn-primary btn-lg">
+                            <i class="fas fa-play-circle mr-2"></i> Get Started Now
+                        </a>
+                    {% else %}
+                        <a href="{% url 'user_videoshow' username=user.username %}" class="btn btn-primary btn-lg">
+                            <i class="fas fa-play-circle mr-2"></i> Get Started Now
+                        </a>
+                    {% endif %}
+                {% else %}
+                    <a href="{% url 'signup' %}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-user-plus mr-2"></i> Create Your Account
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Custom Styles -->
+<style>
+    /* Background Styling */
+    header {
+        position: relative;
+        height: 100vh;
+        overflow: hidden;
+    }
+    
+    .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #c7bfdb 0%, #6925e9 50%, #3500f1 100%); /* Rich navy blue gradient */
+    z-index: 1;
+	}
+    
+    .bg-video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        z-index: 0;
+        overflow: hidden;
+    }
+    
+    .bg-video-content {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+    }
+    
+    .content {
+        z-index: 2;
+        max-width: 800px;
+    }
+    
+    /* Scroll Down Animation */
+    .scroll-down {
+        position: absolute;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 2;
+    }
+    
+    .scroll-down a {
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 2rem;
+        transition: all 0.3s;
+    }
+    
+    .scroll-down a:hover {
+        color: #fff;
+    }
+    
+    .bounce {
+        animation: bounce 2s infinite;
+    }
+    
+    @keyframes bounce {
+        0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+        40% {transform: translateY(-20px);}
+        60% {transform: translateY(-10px);}
+    }
+    
+    /* Carousel Styling */
+    .carousel-section {
+        background: linear-gradient(135deg, #0d1b2a 0%, #1b263b 100%); /* Deep blue gradient instead of gray */
+    }
+    
+    .carousel .carousel-item {
+        transition: transform 0.6s ease-in-out;
+    }
+    
+    .carousel-control-prev, .carousel-control-next {
+        width: 5%;
+    }
+    
+    .card {
+        border-radius: 10px;
+        overflow: hidden;
+        transition: transform 0.3s ease;
+        margin-bottom: 30px;
+    }
+    
+    .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    }
+    
+    .card-img-top {
+        height: 200px;
+        object-fit: cover;
+    }
+    
+    /* Feature Icons */
+    .feature-icon {
+        height: 80px;
+        width: 80px;
+        line-height: 80px;
+        border-radius: 50%;
+        margin: 0 auto;
+        background: rgba(78, 84, 200, 0.1);
+        color: var(--primary-color);
+    }
+    
+    /* CTA Section */
+    .cta-section {
+        background: linear-gradient(135deg, #e0e1dd 0%, #778da9 100%); /* Light blue-gray gradient */
+        padding: 100px 0;
+    }
+    
+    /* Card image replacement styling */
+    .card-img-top {
+        height: 200px;
+    }
+    
+    /* Deepfake illustration container */
+    .deepfake-illustration {
+        background-color: #fff;
+    }
+	.carousel-control-prev, .carousel-control-next {
+    width: 10%; /* Wider clickable area */
+    z-index: 10;
+    opacity: 1;
+	}
+
+	.carousel-control-prev-icon, .carousel-control-next-icon {
+		background-color: rgba(0, 0, 0, 0.6);
+		border-radius: 50%;
+		width: 40px;
+		height: 40px;
+		padding: 12px;
+		background-size: 50%;
+	}
+
+	/* Add margin to the cards to prevent overlap with controls */
+	.carousel .row {
+		margin: 0 40px; /* Create space between cards and controls */
+	}
+
+	/* Make carousel container position relative for proper control positioning */
+	#carouselExample {
+		position: relative;
+		overflow: visible; /* Allow controls to be visible outside container */
+	}
+	/* Fix for carousel indicators (dots) at the bottom */
+	.carousel-indicators {
+    position: absolute;
+    bottom: -50px; /* Moves the indicators further below the cards */
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 0;
+    z-index: 15;
+	}
+
+	.carousel-indicators li {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.5);
+    margin: 0 5px;
+	}
+
+	.carousel-indicators .active {
+		background-color: #fff;
+	}
+
+	/* Increase padding to ensure space for indicators */
+	.carousel-section {
+		padding-bottom: 80px; /* Adjust this value as needed */
+	}
+	
+</style>
+{% endblock %}

@@ -1,0 +1,1 @@
+The major-project is title "Deepfake Video Detection", it utilizes a plethora of techniques for frame extraction and evaluation using 3 models (XceptionNet, MesoInceptionNet, ResNet) to determine whether the uploaded video is deepfaked / face-manipulated or not using the FaceForensics++ dataset for training.
